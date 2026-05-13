@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TFG Perfiladoras</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Perfiladoras</h1>
+      <p>Explorador de perfiles de jugadoras con clustering y score supervisado</p>
+    </div>
+    <div class="status" id="status">Cargando datos...</div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <nav class="tabs" aria-label="Modo de análisis">
+        <button class="tab active" data-view="player-view">Jugadora</button>
+        <button class="tab" data-view="profile-view">Perfil</button>
+      </nav>
+
+      <section class="control-block">
+        <label for="position-select">Posición</label>
+        <select id="position-select"></select>
+      </section>
+
+      <section class="control-block player-controls">
+        <label for="player-search">Buscar jugadora o equipo</label>
+        <input id="player-search" type="search" placeholder="Alexia, Chelsea, Barcelona...">
+        <label for="player-select">Jugadora</label>
+        <select id="player-select" size="10"></select>
+      </section>
+
+      <section class="control-block profile-controls hidden">
+        <div class="row-title">
+          <span>Métricas y pesos</span>
+          <button id="clear-weights" class="ghost">Limpiar</button>
+        </div>
+        <div id="metric-weights" class="metric-list"></div>
+      </section>
+    </aside>
+
+    <section id="player-view" class="view active">
+      <div class="headline">
+        <div>
+          <span class="eyebrow">Perfil por jugadora</span>
+          <h2 id="player-title">Selecciona una jugadora</h2>
+          <p id="player-subtitle"></p>
+        </div>
+        <div class="cluster-pill" id="cluster-pill">Cluster</div>
+      </div>
+
+      <div class="grid two">
+        <section class="panel chart-panel">
+          <h3>Radar percentil</h3>
+          <div id="radar-chart" class="chart"></div>
+        </section>
+        <section class="panel">
+          <h3>Lectura del cluster</h3>
+          <div class="summary-grid">
+            <div>
+              <h4>Fortalezas</h4>
+              <ul id="strengths"></ul>
+            </div>
+            <div>
+              <h4>Debilidades relativas</h4>
+              <ul id="weaknesses"></ul>
+            </div>
+          </div>
+          <h4>Jugadoras parecidas</h4>
+          <div id="similar-list" class="compact-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="profile-view" class="view">
+      <div class="headline">
+        <div>
+          <span class="eyebrow">Perfil creado por el usuario</span>
+          <h2>Ranking de encaje</h2>
+          <p>Pesos positivos premian percentiles altos; pesos negativos premian percentiles bajos.</p>
+        </div>
+        <button id="run-profile" class="primary">Calcular score</button>
+      </div>
+
+      <div class="grid two">
+        <section class="panel chart-panel">
+          <h3>Top jugadoras</h3>
+          <div id="score-chart" class="chart"></div>
+        </section>
+        <section class="panel">
+          <h3>Ranking</h3>
+          <div id="score-table" class="table"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="empty-state" class="empty hidden">
+    <h2>Falta el CSV de perfiles</h2>
+    <p>Exporta el método elegido desde Colab y coloca el archivo en <code>data/perfiles_finales.csv</code>.</p>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
