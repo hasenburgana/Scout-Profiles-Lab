@@ -104,82 +104,78 @@
       </header>
 
       <section id="home-view" class="view active">
-        <div class="home-grid">
-          <section class="panel home-intro">
-            <span class="eyebrow">Punto de entrada</span>
-            <h3>Del análisis cluster a una herramienta de scouting.</h3>
-            <p>Esta pantalla resume cómo usar la aplicación: primero se localiza una jugadora o un rol, después se revisa el perfil estadístico y, por último, se compara el encaje con otras futbolistas de su misma posición.</p>
-            <div class="home-warning">
-              <strong>Lectura importante</strong>
-              <span>Los perfiles y scores no son una nota absoluta de calidad. Sirven para interpretar roles, similitudes y encajes dentro de cada posición.</span>
+        <section class="home-landing">
+          <div class="home-landing-copy">
+            <span class="eyebrow">Scout Profiles Lab</span>
+            <h3>Una herramienta para explorar perfiles de jugadoras desde los datos.</h3>
+            <p>
+              La aplicación permite consultar jugadoras, comparar perfiles y construir búsquedas
+              personalizadas a partir de métricas de rendimiento, clusters y scores de encaje.
+            </p>
+      
+            <div class="home-landing-actions">
+              <button class="primary-action" type="button" data-view-target="player-view">
+                Empezar análisis
+              </button>
+              <button class="secondary-action" type="button" data-view-target="glossary-view">
+                Ver guía
+              </button>
             </div>
-          </section>
-
-          <section class="panel home-flow">
-            <span class="eyebrow">Uso recomendado</span>
-            <h4>Flujo de trabajo</h4>
-            <ol class="home-steps">
-              <li><span>01</span><strong>Buscar una jugadora concreta.</strong><small>Revisar su cluster, radar, fortalezas y futbolistas similares.</small></li>
-              <li><span>02</span><strong>Construir un perfil objetivo.</strong><small>Elegir métricas y niveles deseados para generar un ranking de encaje.</small></li>
-              <li><span>03</span><strong>Comparar candidatas.</strong><small>Usar percentiles y gráficos para entender diferencias entre jugadoras.</small></li>
-              <li><span>04</span><strong>Evaluar mezclas de rasgos.</strong><small>Medir si una futbolista combina dos comportamientos tácticos.</small></li>
-            </ol>
-          </section>
-        </div>
-
-        <section class="home-shortcuts">
-          <button class="home-card" type="button" data-view-target="player-view">
-            <span>01</span>
-            <strong>Buscar jugadora</strong>
-            <small>Ficha individual, radar frente al medoide y similares.</small>
+          </div>
+      
+          <div class="home-landing-panel">
+            <span class="eyebrow">Resumen</span>
+            <h4>Del análisis estadístico a una lectura de scouting</h4>
+            <p>
+              Scout Profiles Lab convierte los resultados del análisis multivariante en una interfaz
+              práctica para interpretar roles, similitudes y posibles encajes entre jugadoras.
+            </p>
+          </div>
+        </section>
+      
+        <section class="home-module-grid">
+          <button class="home-module-card" type="button" data-view-target="player-view">
+            <span class="module-number">01</span>
+            <strong>Jugadora</strong>
+            <small>Consulta el perfil individual de una futbolista.</small>
           </button>
-          <button class="home-card" type="button" data-view-target="profile-view">
-            <span>02</span>
+      
+          <button class="home-module-card" type="button" data-view-target="profile-view">
+            <span class="module-number">02</span>
             <strong>Crear perfil</strong>
-            <small>Ranking por score según las métricas elegidas.</small>
+            <small>Define un perfil objetivo y busca jugadoras similares.</small>
           </button>
-          <button class="home-card" type="button" data-view-target="comparison-view">
-            <span>03</span>
-            <strong>Comparar</strong>
-            <small>Varias jugadoras de la misma posición en radar y barras.</small>
+      
+          <button class="home-module-card" type="button" data-view-target="comparison-view">
+            <span class="module-number">03</span>
+            <strong>Comparativa</strong>
+            <small>Compara varias jugadoras dentro de la misma posición.</small>
           </button>
-          <button class="home-card" type="button" data-view-target="hybrid-view">
-            <span>04</span>
+      
+          <button class="home-module-card" type="button" data-view-target="hybrid-view">
+            <span class="module-number">04</span>
             <strong>Perfil mixto</strong>
-            <small>Score híbrido entre dos bloques tácticos.</small>
+            <small>Analiza combinaciones de rasgos entre perfiles.</small>
           </button>
-          <button class="home-card" type="button" data-view-target="glossary-view">
-            <span>05</span>
+      
+          <button class="home-module-card" type="button" data-view-target="glossary-view">
+            <span class="module-number">05</span>
             <strong>Glosario</strong>
-            <small>Guía breve para leer métricas, clusters y radares.</small>
+            <small>Consulta conceptos, métricas y criterios de lectura.</small>
           </button>
         </section>
-
-        <div class="content-grid home-detail-grid">
-          <section class="panel">
-            <div class="panel-head">
-              <div>
-                <span class="eyebrow">Datos</span>
-                <h4>Qué contiene la herramienta</h4>
-              </div>
-            </div>
-            <div class="home-data-list">
-              <article><strong>Jugadoras por posición</strong><span>Las comparaciones se hacen dentro de cada demarcación para mantener el contexto.</span></article>
-              <article><strong>Clusters interpretados</strong><span>Cada grupo estadístico se traduce a un perfil futbolístico reconocible.</span></article>
-              <article><strong>Métricas explicadas</strong><span>El interrogante de cada variable abre una definición rápida sin salir de la pantalla.</span></article>
-            </div>
-          </section>
-
-          <section class="panel home-method">
-            <div class="panel-head">
-              <div>
-                <span class="eyebrow">Método</span>
-                <h4>Cómo debe leerse</h4>
-              </div>
-            </div>
-            <p>La aplicación parte del análisis cluster ya realizado en la metodología. Su función es convertir esos resultados en consultas prácticas: encontrar perfiles parecidos, detectar encajes concretos y ayudar a que el cuerpo técnico pueda interpretar los datos sin revisar tablas complejas.</p>
-          </section>
-        </div>
+      
+        <section class="home-overview-panel">
+          <div>
+            <span class="eyebrow">Enfoque</span>
+            <h4>Una visión general del rendimiento y del rol</h4>
+          </div>
+          <p>
+            Los resultados no buscan ordenar a las jugadoras de mejor a peor, sino ayudar a entender
+            cómo participan en el juego, qué tipo de perfil representan y con qué otras futbolistas
+            guardan mayor similitud.
+          </p>
+        </section>
       </section>
 
       <section id="player-view" class="view">
