@@ -1,55 +1,67 @@
-# TFG Perfiladoras
+# Scout Profiles Lab
 
-App web local en Java para explorar perfiles de jugadoras.
+App web para explorar perfiles tacticos de jugadoras a partir del CSV final del analisis de clustering.
 
-## 1. Exportar los datos desde Colab
+## Estructura
 
-En el notebook, cuando decidas el metodo final, deja una celda como esta:
+- `server.py`: backend local y logica estadistica principal.
+- `api/index.py`: adaptador FastAPI para desplegar la API en Vercel.
+- `web/index.html`: estructura de la interfaz.
+- `web/styles.css`: estilos visuales.
+- `web/app.js`: interaccion del front end y llamadas a la API.
+- `data/perfiles_finales.csv`: dataset principal de jugadoras.
+- `data/jugadoras_hibridas_fa_pam.csv`: datos auxiliares de perfiles hibridos/atipicos.
+- `vercel.json`: configuracion de rutas para Vercel.
 
-```python
-metodo_final = resultados_pam_sinpca      # cambia por tu metodo elegido
-col_cluster_final = "cluster"             # cluster, cluster_pca, cluster_hier o cluster_fa
+## Ejecutar en local
 
-dfs_final = []
-for pos, res in metodo_final.items():
-    df_pos = res["df"].copy()
-    df_pos["grupo_pos_clustering"] = pos
-    df_pos["cluster_final"] = df_pos[col_cluster_final]
-    dfs_final.append(df_pos)
-
-df_final = pd.concat(dfs_final, ignore_index=True)
-df_final.to_csv("perfiles_finales.csv", index=False, encoding="utf-8-sig")
+```powershell
+pip install -r requirements.txt
+python server.py
 ```
 
-Descarga `perfiles_finales.csv` desde Colab y colocalo en:
+Despues abre:
+
+```text
+http://localhost:8081
+```
+
+La version local usa `server.py`, que sirve el front end y las rutas `/api`.
+
+## Desplegar en Vercel
+
+1. Sube el repositorio a GitHub.
+2. En Vercel, crea un proyecto nuevo e importa ese repositorio.
+3. Usa la configuracion por defecto. El archivo `vercel.json` ya redirige:
+   - `/api/...` a `api/index.py`
+   - `/` y los archivos estaticos a la carpeta `web/`
+4. Vercel instalara las dependencias de `requirements.txt` y publicara la app.
+
+## Funcionalidades
+
+- Busqueda de jugadoras por nombre, seleccion/equipo y posicion.
+- Ficha individual con radar, cluster interpretado, medoide y jugadoras similares.
+- Creacion de perfiles personalizados mediante metricas y pesos.
+- Comparativa entre jugadoras de la misma posicion.
+- Detector de hibridez: mide cuanto combina una jugadora dos rasgos tacticos elegidos.
+- Glosario y ayudas contextuales en las metricas.
+
+## Datos
+
+El CSV principal debe estar en:
 
 ```text
 data/perfiles_finales.csv
 ```
 
-## 2. Ejecutar la app
+Debe incluir, como minimo:
 
-Desde esta carpeta:
+- nombre de jugadora
+- equipo o seleccion
+- posicion/grupo de clustering
+- cluster final
+- metricas numericas usadas en los radares, perfiles y comparativas
 
-```powershell
-javac -encoding UTF-8 -d out src/main/java/tfg/App.java
-java -cp out tfg.App
-```
+## Nota
 
-Abre:
-
-```text
-http://localhost:8080
-```
-
-## Que incluye
-
-- Buscador de jugadoras por nombre o equipo.
-- Perfil de cluster para una jugadora.
-- Radar interactivo con percentiles de la jugadora vs media de su cluster.
-- Jugadoras similares dentro de la misma posicion.
-- Modo supervisado: eliges metricas y pesos, y la app calcula un score de encaje.
-
-## Nota metodologica
-
-Una silueta entre 0.15 y 0.25 no invalida automaticamente el TFG si los clusters tienen lectura futbolistica. En datos de rendimiento deportivo es normal que los perfiles sean continuos y se solapen. Conviene reforzar la validacion con interpretabilidad: medias por cluster, medoides, estabilidad por bootstrap, separacion visual PCA/UMAP y validacion cualitativa de jugadoras conocidas.
+La app no recalcula el clustering. Parte de los resultados ya exportados desde el notebook y los convierte en una herramienta interactiva para interpretar perfiles, comparar jugadoras y crear busquedas de scouting.

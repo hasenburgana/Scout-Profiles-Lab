@@ -3,108 +3,410 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TFG Perfiladoras</title>
-  <link rel="stylesheet" href="/styles.css">
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <title>Scout Profiles Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=hybrid-player-diagnosis-7">
+  <script async src="https://cdn.plot.ly/plotly-2.35.2.min.js" onload="window.dispatchEvent(new Event('plotly-ready'))"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <h1>Perfiladoras</h1>
-      <p>Explorador de perfiles de jugadoras con clustering y score supervisado</p>
-    </div>
-    <div class="status" id="status">Cargando datos...</div>
-  </header>
+  <main id="login-screen" class="login-screen hidden">
+    <section class="login-copy">
+      <div class="brand-mark">SPL</div>
+      <span class="eyebrow">Acceso privado</span>
+      <h1>Scout Profiles Lab</h1>
+      <p>Herramienta profesional para perfilar jugadoras, comparar roles y construir rankings de scouting con clusters interpretables.</p>
+      <form id="login-form" class="login-form">
+        <label for="password">Contraseña</label>
+        <div class="password-line">
+          <input id="password" type="password" autocomplete="current-password" placeholder="Introduce la contraseña">
+          <button type="submit">Entrar</button>
+        </div>
+        <p id="login-error" class="form-error" aria-live="polite"></p>
+      </form>
+    </section>
+    <section class="login-photo" aria-label="Fútbol femenino"></section>
+  </main>
 
-  <main class="layout">
-    <aside class="sidebar">
-      <nav class="tabs" aria-label="Modo de análisis">
-        <button class="tab active" data-view="player-view">Jugadora</button>
-        <button class="tab" data-view="profile-view">Perfil</button>
+  <main id="app-shell" class="app-shell">
+    <aside class="app-sidebar">
+      <div class="side-brand">
+        <div class="brand-mark">SPL</div>
+        <div>
+          <strong>Scout Profiles Lab</strong>
+          <span>Fútbol femenino</span>
+        </div>
+      </div>
+
+      <nav class="side-nav" aria-label="Apartados">
+        <a href="#jugadora" class="nav-item active" data-view="player-view">
+          <span class="nav-icon">01</span>
+          <span>
+            <strong>Jugadora</strong>
+            <small>Perfil individual</small>
+          </span>
+        </a>
+        <a href="#perfil" class="nav-item" data-view="profile-view">
+          <span class="nav-icon">02</span>
+          <span>
+            <strong>Crear perfil</strong>
+            <small>Ranking por score</small>
+          </span>
+        </a>
+        <a href="#comparativa" class="nav-item" data-view="comparison-view">
+          <span class="nav-icon">03</span>
+          <span>
+            <strong>Comparativa</strong>
+            <small>Misma posición</small>
+          </span>
+        </a>
+        <a href="#hibridas" class="nav-item" data-view="hybrid-view">
+          <span class="nav-icon">04</span>
+          <span>
+            <strong>Híbridas</strong>
+            <small>Mezcla de rasgos</small>
+          </span>
+        </a>
+        <a href="#glosario" class="nav-item" data-view="glossary-view">
+          <span class="nav-icon">05</span>
+          <span>
+            <strong>Glosario</strong>
+            <small>Uso y métricas</small>
+          </span>
+        </a>
       </nav>
 
-      <section class="control-block">
-        <label for="position-select">Posición</label>
-        <select id="position-select"></select>
-      </section>
-
-      <section class="control-block player-controls">
-        <label for="player-search">Buscar jugadora o equipo</label>
-        <input id="player-search" type="search" placeholder="Alexia, Chelsea, Barcelona...">
-        <label for="player-select">Jugadora</label>
-        <select id="player-select" size="10"></select>
-      </section>
-
-      <section class="control-block profile-controls hidden">
-        <div class="row-title">
-          <span>Métricas y pesos</span>
-          <button id="clear-weights" class="ghost">Limpiar</button>
-        </div>
-        <div id="metric-weights" class="metric-list"></div>
-      </section>
+      <div class="side-footer">
+        <div id="data-status" class="status-pill">Cargando datos</div>
+      </div>
     </aside>
 
-    <section id="player-view" class="view active">
-      <div class="headline">
+    <section class="app-main">
+      <header class="hero">
         <div>
-          <span class="eyebrow">Perfil por jugadora</span>
-          <h2 id="player-title">Selecciona una jugadora</h2>
-          <p id="player-subtitle"></p>
+          <span class="eyebrow">Herramienta de scouting</span>
+          <h2>Scouting de perfiles y roles de jugadoras.</h2>
+          <p>Busca jugadoras, entiende qué tipo de rol cumplen, compara perfiles similares y crea rankings personalizados para detectar encajes e híbridas.</p>
         </div>
-        <div class="cluster-pill" id="cluster-pill">Cluster</div>
-      </div>
+        <div class="hero-stats">
+          <div><span id="stat-players">0</span><small>Jugadoras</small></div>
+          <div><span id="stat-positions">0</span><small>Posiciones</small></div>
+        </div>
+      </header>
 
-      <div class="grid two">
-        <section class="panel chart-panel">
-          <h3>Radar percentil</h3>
-          <div id="radar-chart" class="chart"></div>
-        </section>
-        <section class="panel">
-          <h3>Lectura del cluster</h3>
-          <div class="summary-grid">
-            <div>
-              <h4>Fortalezas</h4>
-              <ul id="strengths"></ul>
+      <section id="player-view" class="view active">
+        <div class="toolbar">
+          <div>
+            <span class="eyebrow">Perfil individual</span>
+            <h3>Buscar jugadora</h3>
+          </div>
+          <div class="toolbar-grid player-search-grid">
+            <div class="field search-control">
+              <span class="control-label">Nombre o equipo</span>
+              <div class="search-input-row">
+                <input id="player-search" type="search" placeholder="Alexia, Spain, Barcelona..." autocomplete="off">
+                <button id="clear-player-filters" class="secondary-action compact-action" type="button">Limpiar</button>
+              </div>
+              <div id="player-results" class="search-list"></div>
             </div>
+            <label>
+              <span>Equipo / selección</span>
+              <select id="player-team"></select>
+            </label>
+            <label>
+              <span>Posición opcional</span>
+              <select id="player-position"></select>
+            </label>
+          </div>
+        </div>
+
+        <article id="player-card" class="player-card"></article>
+
+        <div class="content-grid profile-grid">
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Radar</span>
+                <h4>Jugadora vs medoide del cluster</h4>
+              </div>
+              <span class="hint">La línea gris representa la jugadora más representativa del grupo.</span>
+            </div>
+            <div id="player-radar" class="chart"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Lectura automática</span>
+                <h4>Interpretación del cluster</h4>
+              </div>
+            </div>
+            <p id="cluster-story" class="story"></p>
+            <div class="pill-group" id="cluster-strengths"></div>
+            <div class="pill-group weak" id="cluster-weaknesses"></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
             <div>
-              <h4>Debilidades relativas</h4>
-              <ul id="weaknesses"></ul>
+              <span class="eyebrow">Similares</span>
+              <h4>Jugadoras más parecidas</h4>
             </div>
           </div>
-          <h4>Jugadoras parecidas</h4>
-          <div id="similar-list" class="compact-list"></div>
+          <div id="similar-grid" class="player-grid"></div>
         </section>
-      </div>
-    </section>
+      </section>
 
-    <section id="profile-view" class="view">
-      <div class="headline">
-        <div>
-          <span class="eyebrow">Perfil creado por el usuario</span>
-          <h2>Ranking de encaje</h2>
-          <p>Pesos positivos premian percentiles altos; pesos negativos premian percentiles bajos.</p>
+      <section id="profile-view" class="view">
+        <div class="toolbar">
+          <div>
+            <span class="eyebrow">Perfil objetivo</span>
+            <h3>Construir ranking por score</h3>
+          </div>
+          <div class="toolbar-grid profile-toolbar">
+            <label>
+              <span>Posición</span>
+              <select id="profile-position"></select>
+            </label>
+            <div class="field search-control">
+              <span class="control-label">Buscar métrica</span>
+              <input id="metric-search" type="search" placeholder="xG, pases, presión..." autocomplete="off">
+              <p class="field-help">Escribe una métrica y pulsa Añadir para meterla en el perfil objetivo.</p>
+              <div id="metric-search-results" class="search-list"></div>
+            </div>
+          </div>
         </div>
-        <button id="run-profile" class="primary">Calcular score</button>
-      </div>
 
-      <div class="grid two">
-        <section class="panel chart-panel">
-          <h3>Top jugadoras</h3>
-          <div id="score-chart" class="chart"></div>
-        </section>
-        <section class="panel">
-          <h3>Ranking</h3>
-          <div id="score-table" class="table"></div>
-        </section>
-      </div>
+        <div class="content-grid builder-grid">
+          <section class="panel metric-builder">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Objetivo</span>
+                <h4>Métricas del perfil</h4>
+              </div>
+              <button id="clear-weights" class="secondary-action">Reiniciar</button>
+            </div>
+            <div id="metric-weights" class="metric-list"></div>
+          </section>
+
+          <section class="panel profile-action-panel">
+            <span class="eyebrow">Resultado</span>
+            <h4>Calcular encajes</h4>
+            <p class="method-note">Cada valor marca el nivel deseado de 0 a 10. El ranking busca el parecido con ese dibujo completo: una media alta solo indica que has pedido un perfil muy exigente, no que la jugadora sea mejor.</p>
+            <div id="profile-summary" class="profile-summary"></div>
+            <button id="run-profile" class="primary-action">Calcular</button>
+          </section>
+        </div>
+
+        <div class="content-grid profile-results-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Top encajes</span>
+                <h4>Jugadoras más cercanas al perfil</h4>
+              </div>
+            </div>
+            <div id="score-table" class="ranking-list"></div>
+          </section>
+
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Radar</span>
+                <h4>Perfil objetivo vs candidatas</h4>
+              </div>
+              <span class="hint">Usa “Añadir radar” para comparar más jugadoras.</span>
+            </div>
+            <div id="score-chart" class="chart medium"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="comparison-view" class="view">
+        <div class="toolbar">
+          <div>
+            <span class="eyebrow">Comparativa</span>
+            <h3>Comparar jugadoras de la misma posición</h3>
+          </div>
+          <div class="toolbar-grid compare-toolbar">
+            <label>
+              <span>Posición</span>
+              <select id="compare-position"></select>
+            </label>
+            <div class="field search-control">
+              <span class="control-label">Jugadoras</span>
+              <input id="compare-player-search" type="search" placeholder="Buscar jugadora..." autocomplete="off">
+              <div id="compare-player-results" class="search-list"></div>
+              <div id="compare-selected-players" class="selected-box"></div>
+            </div>
+            <div class="field search-control">
+              <span class="control-label">Métricas</span>
+              <input id="compare-metric-search" type="search" placeholder="Buscar métrica..." autocomplete="off">
+              <div id="compare-metric-results" class="search-list"></div>
+              <div id="compare-selected-metrics" class="selected-box"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="comparison-cards" class="comparison-cards"></div>
+        <div class="content-grid two">
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Radar</span>
+                <h4>Radar en percentiles comparados</h4>
+              </div>
+            </div>
+            <div id="compare-radar" class="chart"></div>
+          </section>
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Barras</span>
+                <h4>Detalle por métrica</h4>
+              </div>
+            </div>
+            <div id="compare-bars" class="chart"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="hybrid-view" class="view">
+        <div class="toolbar">
+          <div>
+            <span class="eyebrow">Detector híbrido</span>
+            <h3>Medir hibridez de una jugadora</h3>
+          </div>
+          <div class="toolbar-grid hybrid-player-grid">
+            <div class="field search-control">
+              <span class="control-label">Nombre o equipo</span>
+              <div class="search-input-row">
+                <input id="hybrid-player-search" type="search" placeholder="Alexia, Spain, Barcelona..." autocomplete="off">
+                <button id="clear-hybrid-player-filters" class="secondary-action compact-action" type="button">Limpiar</button>
+              </div>
+              <div id="hybrid-player-results" class="search-list"></div>
+            </div>
+            <div class="field">
+              <span class="control-label">Jugadora seleccionada</span>
+              <div id="hybrid-selected-player" class="hybrid-selected-card"></div>
+            </div>
+            <label class="hybrid-position-field hidden">
+              <span>Posición detectada</span>
+              <select id="hybrid-position"></select>
+            </label>
+          </div>
+        </div>
+
+        <div class="content-grid hybrid-builder-grid">
+          <section class="panel hybrid-block">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Bloque A</span>
+                <h4>Primer rasgo</h4>
+              </div>
+              <label class="block-weight">
+                <span>Peso</span>
+                <input id="hybrid-weight-a" type="range" min="1" max="5" step="1" value="3">
+              </label>
+            </div>
+            <label class="hybrid-block-select">
+              <span>Bloque táctico</span>
+              <select id="hybrid-block-select-a"></select>
+            </label>
+            <div id="hybrid-block-a" class="hybrid-block-summary"></div>
+          </section>
+
+          <section class="panel hybrid-block">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Bloque B</span>
+                <h4>Segundo rasgo</h4>
+              </div>
+              <label class="block-weight">
+                <span>Peso</span>
+                <input id="hybrid-weight-b" type="range" min="1" max="5" step="1" value="3">
+              </label>
+            </div>
+            <label class="hybrid-block-select">
+              <span>Bloque táctico</span>
+              <select id="hybrid-block-select-b"></select>
+            </label>
+            <div id="hybrid-block-b" class="hybrid-block-summary"></div>
+          </section>
+
+          <section class="panel hybrid-action-panel">
+            <span class="eyebrow">Resultado</span>
+            <h4>Calcular hibridez</h4>
+            <p class="method-note">El score mide si la jugadora seleccionada combina bien los dos rasgos elegidos dentro de su posición. Premia que puntúe alto en ambos bloques y que la mezcla esté equilibrada.</p>
+            <div id="hybrid-weight-split" class="weight-split"></div>
+            <div class="hybrid-actions">
+              <button id="run-hybrid" class="primary-action">Calcular hibridez</button>
+              <button id="clear-hybrid" class="secondary-action">Restaurar</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="content-grid hybrid-results-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Selección</span>
+                <h4>Jugadora y mezcla elegida</h4>
+              </div>
+            </div>
+            <div id="hybrid-list" class="ranking-list hybrid-list"></div>
+          </section>
+
+          <section class="panel">
+            <div id="hybrid-detail"></div>
+          </section>
+        </div>
+
+        <div class="content-grid two">
+          <section class="panel chart-panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Radar</span>
+                <h4>Perfil híbrido vs jugadora</h4>
+              </div>
+            </div>
+            <div id="hybrid-radar" class="chart"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Detalle</span>
+                <h4>Qué aporta en cada bloque</h4>
+              </div>
+            </div>
+            <p class="method-note compact-note">Cada porcentaje indica cómo de fuerte es la jugadora en esa métrica dentro de su posición. Las métricas altas sostienen el bloque; las bajas explican dónde se aleja de la mezcla.</p>
+            <div id="hybrid-metrics" class="hybrid-metrics"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="glossary-view" class="view">
+        <div class="panel glossary">
+          <span class="eyebrow">Guía</span>
+          <h3>Qué es esta herramienta y cómo se utiliza</h3>
+          <p class="glossary-intro">La app sirve para traducir estadísticas de jugadoras en perfiles de scouting fáciles de leer. Puedes buscar una jugadora concreta, entender su rol, ver con quién se parece, comparar futbolistas de la misma posición y construir rankings según el tipo de perfil que necesitas.</p>
+          <div class="glossary-grid">
+            <article><h4>1. Buscar una jugadora</h4><p>Empieza por una futbolista concreta para entender su rol. La ficha muestra su posición, su grupo de estilo, un radar frente a la medoide del cluster y jugadoras parecidas dentro del mismo contexto.</p></article>
+            <article><h4>2. Leer los radares</h4><p>Los radares se leen en percentiles dentro de la posición: cuanto más lejos del centro, más alta está la jugadora en esa métrica respecto a sus pares. Ahora se dibujan como líneas para poder pasar el ratón por cualquier punto sin que otra área tape el dato.</p></article>
+            <article><h4>3. Entender clusters</h4><p>Un cluster es un grupo de jugadoras con comportamientos estadísticos parecidos. No es una nota de calidad: sirve para contextualizar el rol. La medoide es la jugadora más representativa de ese grupo y por eso se usa como referencia en gris.</p></article>
+            <article><h4>4. Crear perfil</h4><p>Define el nivel objetivo de cada métrica de 0 a 10 y calcula. La app devuelve un top corto de candidatas y un radar donde puedes comparar el perfil buscado con la mejor jugadora y añadir otras del ranking.</p></article>
+            <article><h4>5. Comparar e hibridar</h4><p>Comparativa enfrenta jugadoras de la misma posición. Híbridas permite elegir una jugadora concreta y medir cuánto combina dos rasgos tácticos dentro de su demarcación.</p></article>
+            <article><h4>6. Ayudas de métricas</h4><p>Pulsa el interrogante de cualquier métrica para abrir una explicación breve. Así las definiciones viven al lado del dato y el glosario se centra en cómo interpretar la herramienta.</p></article>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
-  <div id="empty-state" class="empty hidden">
-    <h2>Falta el CSV de perfiles</h2>
-    <p>Exporta el método elegido desde Colab y coloca el archivo en <code>data/perfiles_finales.csv</code>.</p>
-  </div>
-
-  <script src="/app.js"></script>
+  <div id="metric-popover" class="metric-popover hidden"></div>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js?v=hybrid-player-diagnosis-4"></script>
 </body>
 </html>
