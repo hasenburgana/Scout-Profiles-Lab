@@ -2448,7 +2448,8 @@ button {
   font-family: "Space Mono", monospace;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #0f1d21;
+  /*color: #0f1d21;*/
+  color: var(--teal);
   background: rgba(255, 255, 255, 0.14);
 
 }
