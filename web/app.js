@@ -2229,10 +2229,11 @@ function avatarHtml(player) {
   return `
     <svg viewBox="0 0 128 128" role="img" aria-label="Avatar de jugadora">
       <rect width="128" height="128" rx="64" fill="#ffffff"></rect>
-      <path d="M26 116c5-20 17-33 34-38 3-1 5-3 5-6V58h14v14c0 3 2 5 5 6 17 5 29 18 34 38H26z" fill="#050505"></path>
-      <path d="M37 67c0-31 15-51 37-51 21 0 37 20 37 51 0 12-3 24-8 34H45c-5-10-8-22-8-34z" fill="#050505"></path>
-      <path d="M31 88c5-10 9-24 9-40 4 20 12 35 27 42H31z" fill="#050505"></path>
-      <path d="M97 48c0 16 4 30 9 40H70c15-7 23-22 27-40z" fill="#050505"></path>
+      <path d="M64 18c-18 0-30 18-30 43 0 17-5 31-13 41h86c-8-10-13-24-13-41 0-25-12-43-30-43z" fill="#050505"></path>
+      <path d="M42 78c-14 7-23 20-25 40h94c-2-20-11-33-25-40-6 8-15 13-22 13s-16-5-22-13z" fill="#050505"></path>
+      <path d="M33 58c-7 15-5 35 5 52h12c-10-16-14-34-12-52h-5z" fill="#050505"></path>
+      <path d="M95 58c7 15 5 35-5 52H78c10-16 14-34 12-52h5z" fill="#050505"></path>
+      <rect x="18" y="116" width="92" height="12" fill="#ffffff"></rect>
     </svg>
   `;
 }
