@@ -40,36 +40,43 @@
       </div>
 
       <nav class="side-nav" aria-label="Apartados">
-        <a href="#jugadora" class="nav-item active" data-view="player-view">
+        <a href="#inicio" class="nav-item active" data-view="home-view">
           <span class="nav-icon">01</span>
+          <span>
+            <strong>Inicio</strong>
+            <small>Resumen y acceso</small>
+          </span>
+        </a>
+        <a href="#jugadora" class="nav-item" data-view="player-view">
+          <span class="nav-icon">02</span>
           <span>
             <strong>Jugadora</strong>
             <small>Perfil individual</small>
           </span>
         </a>
         <a href="#perfil" class="nav-item" data-view="profile-view">
-          <span class="nav-icon">02</span>
+          <span class="nav-icon">03</span>
           <span>
             <strong>Crear perfil</strong>
             <small>Ranking por score</small>
           </span>
         </a>
         <a href="#comparativa" class="nav-item" data-view="comparison-view">
-          <span class="nav-icon">03</span>
+          <span class="nav-icon">04</span>
           <span>
             <strong>Comparativa</strong>
             <small>Misma posición</small>
           </span>
         </a>
         <a href="#hibridas" class="nav-item" data-view="hybrid-view">
-          <span class="nav-icon">04</span>
+          <span class="nav-icon">05</span>
           <span>
             <strong>Perfil mixto</strong>
           <small>Encaje híbrido</small>
           </span>
         </a>
         <a href="#glosario" class="nav-item" data-view="glossary-view">
-          <span class="nav-icon">05</span>
+          <span class="nav-icon">06</span>
           <span>
             <strong>Glosario</strong>
             <small>Uso y métricas</small>
@@ -96,7 +103,86 @@
         </div>
       </header>
 
-      <section id="player-view" class="view active">
+      <section id="home-view" class="view active">
+        <div class="home-grid">
+          <section class="panel home-intro">
+            <span class="eyebrow">Punto de entrada</span>
+            <h3>Del análisis cluster a una herramienta de scouting.</h3>
+            <p>Esta pantalla resume cómo usar la aplicación: primero se localiza una jugadora o un rol, después se revisa el perfil estadístico y, por último, se compara el encaje con otras futbolistas de su misma posición.</p>
+            <div class="home-warning">
+              <strong>Lectura importante</strong>
+              <span>Los perfiles y scores no son una nota absoluta de calidad. Sirven para interpretar roles, similitudes y encajes dentro de cada posición.</span>
+            </div>
+          </section>
+
+          <section class="panel home-flow">
+            <span class="eyebrow">Uso recomendado</span>
+            <h4>Flujo de trabajo</h4>
+            <ol class="home-steps">
+              <li><span>01</span><strong>Buscar una jugadora concreta.</strong><small>Revisar su cluster, radar, fortalezas y futbolistas similares.</small></li>
+              <li><span>02</span><strong>Construir un perfil objetivo.</strong><small>Elegir métricas y niveles deseados para generar un ranking de encaje.</small></li>
+              <li><span>03</span><strong>Comparar candidatas.</strong><small>Usar percentiles y gráficos para entender diferencias entre jugadoras.</small></li>
+              <li><span>04</span><strong>Evaluar mezclas de rasgos.</strong><small>Medir si una futbolista combina dos comportamientos tácticos.</small></li>
+            </ol>
+          </section>
+        </div>
+
+        <section class="home-shortcuts">
+          <button class="home-card" type="button" data-view-target="player-view">
+            <span>01</span>
+            <strong>Buscar jugadora</strong>
+            <small>Ficha individual, radar frente al medoide y similares.</small>
+          </button>
+          <button class="home-card" type="button" data-view-target="profile-view">
+            <span>02</span>
+            <strong>Crear perfil</strong>
+            <small>Ranking por score según las métricas elegidas.</small>
+          </button>
+          <button class="home-card" type="button" data-view-target="comparison-view">
+            <span>03</span>
+            <strong>Comparar</strong>
+            <small>Varias jugadoras de la misma posición en radar y barras.</small>
+          </button>
+          <button class="home-card" type="button" data-view-target="hybrid-view">
+            <span>04</span>
+            <strong>Perfil mixto</strong>
+            <small>Score híbrido entre dos bloques tácticos.</small>
+          </button>
+          <button class="home-card" type="button" data-view-target="glossary-view">
+            <span>05</span>
+            <strong>Glosario</strong>
+            <small>Guía breve para leer métricas, clusters y radares.</small>
+          </button>
+        </section>
+
+        <div class="content-grid home-detail-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Datos</span>
+                <h4>Qué contiene la herramienta</h4>
+              </div>
+            </div>
+            <div class="home-data-list">
+              <article><strong>Jugadoras por posición</strong><span>Las comparaciones se hacen dentro de cada demarcación para mantener el contexto.</span></article>
+              <article><strong>Clusters interpretados</strong><span>Cada grupo estadístico se traduce a un perfil futbolístico reconocible.</span></article>
+              <article><strong>Métricas explicadas</strong><span>El interrogante de cada variable abre una definición rápida sin salir de la pantalla.</span></article>
+            </div>
+          </section>
+
+          <section class="panel home-method">
+            <div class="panel-head">
+              <div>
+                <span class="eyebrow">Método</span>
+                <h4>Cómo debe leerse</h4>
+              </div>
+            </div>
+            <p>La aplicación parte del análisis cluster ya realizado en la metodología. Su función es convertir esos resultados en consultas prácticas: encontrar perfiles parecidos, detectar encajes concretos y ayudar a que el cuerpo técnico pueda interpretar los datos sin revisar tablas complejas.</p>
+          </section>
+        </div>
+      </section>
+
+      <section id="player-view" class="view">
         <div class="toolbar">
           <div>
             <span class="eyebrow">Perfil individual</span>
@@ -547,4 +633,3 @@
   <script src="/app.js?v=app-vercel-data-3"></script>
 </body>
 </html>
-

@@ -341,7 +341,7 @@ const state = {
   hybridBlockAId: "",
   hybridBlockBId: "",
   hybridPosition: "",
-  currentView: "player-view"
+  currentView: "home-view"
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -413,6 +413,7 @@ init();
 window.addEventListener("plotly-ready", refreshVisibleCharts);
 
 function init() {
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   bindEvents();
   showApp();
 }
@@ -441,6 +442,12 @@ function bindEvents() {
     item.addEventListener("click", (event) => {
       event.preventDefault();
       switchView(item.dataset.view);
+    });
+  });
+  document.querySelectorAll("[data-view-target]").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      switchView(item.dataset.viewTarget);
     });
   });
 
@@ -611,6 +618,7 @@ function switchView(viewId) {
   state.currentView = viewId;
   document.querySelectorAll(".nav-item").forEach((item) => item.classList.toggle("active", item.dataset.view === viewId));
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === viewId));
+  window.scrollTo({ top: 0, behavior: "smooth" });
   if (viewId === "profile-view") {
     if (!state.profileSelectedMetrics.length) resetProfileMetrics();
     renderMetricPicker();
