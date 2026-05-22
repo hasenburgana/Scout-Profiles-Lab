@@ -2335,7 +2335,10 @@ function debounce(fn, delay) {
 }
 
 async function fetchJson(url, options) {
-  const response = await fetch(url, options);
+  const response = await window.fetch(url, {
+    cache: "no-store",
+    ...(options || {})
+  });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);
   }
