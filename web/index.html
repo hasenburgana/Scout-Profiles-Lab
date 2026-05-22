@@ -64,8 +64,8 @@
         <a href="#hibridas" class="nav-item" data-view="hybrid-view">
           <span class="nav-icon">04</span>
           <span>
-            <strong>Híbridas</strong>
-          <small>Encaje mixto</small>
+            <strong>Perfil mixto</strong>
+          <small>Encaje híbrido</small>
           </span>
         </a>
         <a href="#glosario" class="nav-item" data-view="glossary-view">
@@ -274,11 +274,11 @@
         </div>
       </section>
 
-      <section id="hybrid-view" class="view">
+      <!--<section id="hybrid-view" class="view">
         <div class="toolbar">
           <div>
             <span class="eyebrow">Mezcla de rasgos</span>
-            <h3>Encaje mixto por jugadora</h3>
+            <h3>Evaluación de perfil híbrido</h3>
           </div>
           <div class="toolbar-grid hybrid-player-grid">
             <div class="field search-control">
@@ -298,7 +298,33 @@
               <select id="hybrid-position"></select>
             </label>
           </div>
+        </div>-->
+      <section id="player-view" class="view active">
+        <div class="toolbar">
+          <div>
+            <span class="eyebrow">Mezcla de perfiles</span>
+            <h3>Evaluación de perfil híbrido</h3>
+          </div>
+          <div class="toolbar-grid player-search-grid">
+            <div class="field search-control">
+              <span class="control-label">Nombre o equipo</span>
+              <div class="search-input-row">
+                <input id="player-search" type="search" placeholder="Alexia, Spain..." autocomplete="off">
+                <button id="clear-player-filters" class="secondary-action compact-action" type="button">Limpiar</button>
+              </div>
+              <div id="player-results" class="search-list"></div>
+            </div>
+            <label>
+              <span>Equipo / selección</span>
+              <select id="player-team"></select>
+            </label>
+            <label>
+              <span>Posición opcional</span>
+              <select id="player-position"></select>
+            </label>
+          </div>
         </div>
+      
 
         <div class="content-grid hybrid-builder-grid">
           <section class="panel hybrid-block">
@@ -339,7 +365,7 @@
 
           <section class="panel hybrid-action-panel">
             <span class="eyebrow">Resultado</span>
-            <h4>Encaje automático</h4>
+            <!--<h4>Encaje automático</h4>-->
             <p class="method-note">El score se actualiza al cambiar la jugadora, los rasgos o los pesos. Premia que tenga buen nivel en ambos bloques, no solo que destaque mucho en uno.</p>
             <div id="hybrid-weight-split" class="weight-split"></div>
             <div class="hybrid-actions">
