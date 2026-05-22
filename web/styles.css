@@ -2313,10 +2313,14 @@ button {
   }
 }
 
+/* =========================
+   HOME - ESTILO MÁS INTEGRADO
+========================= */
+
 .home-landing {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-  gap: 22px;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+  gap: 20px;
   margin-bottom: 22px;
 }
 
@@ -2324,30 +2328,39 @@ button {
 .home-landing-panel,
 .home-overview-panel,
 .home-module-card {
-  border: 1px solid rgba(255,255,255,0.10);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
-    rgba(10, 18, 32, 0.74);
-  border-radius: 26px;
-  box-shadow: 0 22px 60px rgba(0,0,0,0.20);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(73, 82, 96, 0.92), rgba(64, 72, 86, 0.92));
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(8, 15, 28, 0.16);
 }
 
 .home-landing-copy {
-  padding: 38px;
+  padding: 40px 42px;
+}
+
+.home-landing-copy .eyebrow,
+.home-landing-panel .eyebrow,
+.home-overview-panel .eyebrow {
+  color: #00a6a6;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .home-landing-copy h3 {
-  max-width: 780px;
-  margin: 10px 0 16px;
-  font-size: clamp(2rem, 4vw, 4rem);
+  max-width: 760px;
+  margin: 16px 0 18px;
+  font-size: clamp(2.1rem, 4vw, 4.25rem);
   line-height: 0.98;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.07em;
+  color: #0f1d21;
 }
 
 .home-landing-copy p {
-  max-width: 680px;
+  max-width: 700px;
   margin: 0;
-  color: rgba(255,255,255,0.70);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 1.02rem;
   line-height: 1.7;
 }
@@ -2355,104 +2368,129 @@ button {
 .home-landing-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
+  gap: 14px;
+  margin-top: 30px;
 }
 
 .home-landing-panel {
   padding: 28px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .home-landing-panel h4 {
   margin: 10px 0 12px;
-  font-size: 1.35rem;
+  font-size: 1.45rem;
+  line-height: 1.15;
   letter-spacing: -0.04em;
+  color: #0f1d21;
 }
 
 .home-landing-panel p {
   margin: 0;
-  color: rgba(255,255,255,0.64);
+  color: rgba(255, 255, 255, 0.84);
   line-height: 1.65;
 }
 
+
+/* =========================
+   TARJETAS DE APARTADOS
+========================= */
+
 .home-module-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 16px;
   margin-bottom: 22px;
 }
 
 .home-module-card {
-  min-height: 165px;
-  padding: 20px;
+  min-height: 170px;
+  padding: 22px;
   color: inherit;
   text-align: left;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
 
 .home-module-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255,255,255,0.22);
-  background: rgba(255,255,255,0.08);
+  border-color: rgba(0, 166, 166, 0.26);
+  background: linear-gradient(180deg, rgba(80, 90, 105, 0.98), rgba(67, 76, 90, 0.98));
 }
 
 .module-number {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  margin-bottom: 26px;
-  border-radius: 13px;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 22px;
+  border-radius: 999px;
   font-family: "Space Mono", monospace;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  background: rgba(255,255,255,0.10);
+  color: #0f1d21;
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .home-module-card strong {
   display: block;
   margin-bottom: 8px;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.15;
+  color: #0f1d21;
 }
 
 .home-module-card small {
   display: block;
-  color: rgba(255,255,255,0.60);
-  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+  font-size: 0.96rem;
 }
+
+
+/* =========================
+   PANEL INFERIOR
+========================= */
 
 .home-overview-panel {
   display: grid;
-  grid-template-columns: 0.9fr 1.4fr;
+  grid-template-columns: 0.9fr 1.5fr;
   gap: 24px;
   align-items: center;
-  padding: 26px 30px;
+  padding: 28px 30px;
 }
 
 .home-overview-panel h4 {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 1.35rem;
   letter-spacing: -0.04em;
+  color: #0f1d21;
 }
 
 .home-overview-panel p {
   margin: 0;
-  color: rgba(255,255,255,0.66);
+  color: rgba(255, 255, 255, 0.86);
   line-height: 1.7;
 }
 
-/* Responsive */
-@media (max-width: 1180px) {
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
   .home-landing {
     grid-template-columns: 1fr;
   }
 
   .home-module-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
 
   .home-overview-panel {
@@ -2472,15 +2510,15 @@ button {
     padding: 28px;
   }
 
+  .home-landing-copy h3 {
+    font-size: 2.4rem;
+  }
+
   .home-module-grid {
     grid-template-columns: 1fr;
   }
 
   .home-module-card {
     min-height: auto;
-  }
-
-  .module-number {
-    margin-bottom: 18px;
   }
 }
