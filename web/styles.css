@@ -879,10 +879,12 @@ button {
 }
 
 .metric-help {
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 17px;
   height: 17px;
+  line-height: 17px;
   min-height: 17px;
   padding: 0;
   border-radius: 50%;
@@ -891,6 +893,8 @@ button {
   color: var(--blue);
   font-size: 11px;
   font-weight: 900;
+  text-align: center;
+  vertical-align: middle;
   cursor: pointer;
 }
 
@@ -1422,6 +1426,7 @@ button {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 14px;
+  margin-bottom: 16px;
 }
 
 .hybrid-score-grid article,
@@ -1436,12 +1441,18 @@ button {
 }
 
 .hybrid-score-grid span {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: var(--muted);
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: .06em;
+}
+
+.hybrid-score-grid .metric-help {
+  flex: 0 0 auto;
 }
 
 .hybrid-score-grid strong {
