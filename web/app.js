@@ -10,6 +10,7 @@ const POSITION_LABELS = {
 
 const CLUSTER_COLORS = ["#0f766e", "#2563eb", "#f97316", "#dc2626", "#7c3aed", "#059669", "#0891b2", "#be123c"];
 const PLAYER_COLORS = ["#E74C3C", "#2357c6", "#0f8f8c", "#F4A261", "#8E44AD", "#2A9D8F"];
+const DEFAULT_PLAYER_PHOTO = "https://i.pinimg.com/736x/31/8f/19/318f19c71fd5c49d18fe770fb1bcef50.jpg";
 
 const PROFILE_DEFAULT_METRICS = {
   CB: ["pct_pases", "pct_pases_largos", "pct_pases_prog", "pct_pases_bajo_presion", "pases_ult_tercio_p90", "carries_prog_p90", "ratio_intercepciones_vs_entradas", "duelos_ter_ganados_p90", "despejes_p90", "pct_aereos", "pct_duelos_total", "recuperaciones_p90", "acciones_defensivas_campo_rival_p90"],
@@ -2226,16 +2227,7 @@ function avatarHtml(player) {
   if (player.photo) {
     return `<img src="${escapeHtml(player.photo)}" alt="${escapeHtml(player.name)}">`;
   }
-  return `
-    <svg viewBox="0 0 128 128" role="img" aria-label="Avatar de jugadora">
-      <rect width="128" height="128" rx="64" fill="#ffffff"></rect>
-      <path d="M64 18c-18 0-30 18-30 43 0 17-5 31-13 41h86c-8-10-13-24-13-41 0-25-12-43-30-43z" fill="#050505"></path>
-      <path d="M42 78c-14 7-23 20-25 40h94c-2-20-11-33-25-40-6 8-15 13-22 13s-16-5-22-13z" fill="#050505"></path>
-      <path d="M33 58c-7 15-5 35 5 52h12c-10-16-14-34-12-52h-5z" fill="#050505"></path>
-      <path d="M95 58c7 15 5 35-5 52H78c10-16 14-34 12-52h5z" fill="#050505"></path>
-      <rect x="18" y="116" width="92" height="12" fill="#ffffff"></rect>
-    </svg>
-  `;
+  return `<img class="default-avatar-img" src="${DEFAULT_PLAYER_PHOTO}" alt="Silueta de jugadora">`;
 }
 
 function flagHtml(player) {
