@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=hybrid-player-diagnosis-7">
+  <link rel="stylesheet" href="/styles.css?v=app-polish-1">
   <script async src="https://cdn.plot.ly/plotly-2.35.2.min.js" onload="window.dispatchEvent(new Event('plotly-ready'))"></script>
 </head>
 <body>
@@ -65,7 +65,7 @@
           <span class="nav-icon">04</span>
           <span>
             <strong>Híbridas</strong>
-            <small>Mezcla de rasgos</small>
+          <small>Encaje mixto</small>
           </span>
         </a>
         <a href="#glosario" class="nav-item" data-view="glossary-view">
@@ -92,6 +92,7 @@
         <div class="hero-stats">
           <div><span id="stat-players">0</span><small>Jugadoras</small></div>
           <div><span id="stat-positions">0</span><small>Posiciones</small></div>
+          <div><span id="stat-teams">0</span><small>Selecciones</small></div>
         </div>
       </header>
 
@@ -105,7 +106,7 @@
             <div class="field search-control">
               <span class="control-label">Nombre o equipo</span>
               <div class="search-input-row">
-                <input id="player-search" type="search" placeholder="Alexia, Spain, Barcelona..." autocomplete="off">
+                <input id="player-search" type="search" placeholder="Alexia, Spain..." autocomplete="off">
                 <button id="clear-player-filters" class="secondary-action compact-action" type="button">Limpiar</button>
               </div>
               <div id="player-results" class="search-list"></div>
@@ -276,14 +277,14 @@
       <section id="hybrid-view" class="view">
         <div class="toolbar">
           <div>
-            <span class="eyebrow">Detector híbrido</span>
-            <h3>Medir hibridez de una jugadora</h3>
+            <span class="eyebrow">Mezcla de rasgos</span>
+            <h3>Encaje mixto por jugadora</h3>
           </div>
           <div class="toolbar-grid hybrid-player-grid">
             <div class="field search-control">
               <span class="control-label">Nombre o equipo</span>
               <div class="search-input-row">
-                <input id="hybrid-player-search" type="search" placeholder="Alexia, Spain, Barcelona..." autocomplete="off">
+                <input id="hybrid-player-search" type="search" placeholder="Alexia, Spain..." autocomplete="off">
                 <button id="clear-hybrid-player-filters" class="secondary-action compact-action" type="button">Limpiar</button>
               </div>
               <div id="hybrid-player-results" class="search-list"></div>
@@ -339,7 +340,7 @@
           <section class="panel hybrid-action-panel">
             <span class="eyebrow">Resultado</span>
             <h4>Calcular hibridez</h4>
-            <p class="method-note">El score mide si la jugadora seleccionada combina bien los dos rasgos elegidos dentro de su posición. Premia que puntúe alto en ambos bloques y que la mezcla esté equilibrada.</p>
+            <p class="method-note">El score mide si la jugadora seleccionada combina bien los dos rasgos elegidos dentro de su posición. Premia que tenga buen nivel en ambos bloques, no solo que destaque mucho en uno.</p>
             <div id="hybrid-weight-split" class="weight-split"></div>
             <div class="hybrid-actions">
               <button id="run-hybrid" class="primary-action">Calcular hibridez</button>
@@ -391,14 +392,16 @@
         <div class="panel glossary">
           <span class="eyebrow">Guía</span>
           <h3>Qué es esta herramienta y cómo se utiliza</h3>
-          <p class="glossary-intro">La app sirve para traducir estadísticas de jugadoras en perfiles de scouting fáciles de leer. Puedes buscar una jugadora concreta, entender su rol, ver con quién se parece, comparar futbolistas de la misma posición y construir rankings según el tipo de perfil que necesitas.</p>
+          <p class="glossary-intro">La app sirve para traducir estadísticas de jugadoras en perfiles de scouting fáciles de leer. Parte de los eventos registrados en los partidos, como pases, conducciones, presiones, tiros o duelos, y los convierte en comparaciones dentro de cada posición.</p>
           <div class="glossary-grid">
-            <article><h4>1. Buscar una jugadora</h4><p>Empieza por una futbolista concreta para entender su rol. La ficha muestra su posición, su grupo de estilo, un radar frente a la medoide del cluster y jugadoras parecidas dentro del mismo contexto.</p></article>
-            <article><h4>2. Leer los radares</h4><p>Los radares se leen en percentiles dentro de la posición: cuanto más lejos del centro, más alta está la jugadora en esa métrica respecto a sus pares. Ahora se dibujan como líneas para poder pasar el ratón por cualquier punto sin que otra área tape el dato.</p></article>
-            <article><h4>3. Entender clusters</h4><p>Un cluster es un grupo de jugadoras con comportamientos estadísticos parecidos. No es una nota de calidad: sirve para contextualizar el rol. La medoide es la jugadora más representativa de ese grupo y por eso se usa como referencia en gris.</p></article>
-            <article><h4>4. Crear perfil</h4><p>Define el nivel objetivo de cada métrica de 0 a 10 y calcula. La app devuelve un top corto de candidatas y un radar donde puedes comparar el perfil buscado con la mejor jugadora y añadir otras del ranking.</p></article>
-            <article><h4>5. Comparar e hibridar</h4><p>Comparativa enfrenta jugadoras de la misma posición. Híbridas permite elegir una jugadora concreta y medir cuánto combina dos rasgos tácticos dentro de su demarcación.</p></article>
-            <article><h4>6. Ayudas de métricas</h4><p>Pulsa el interrogante de cualquier métrica para abrir una explicación breve. Así las definiciones viven al lado del dato y el glosario se centra en cómo interpretar la herramienta.</p></article>
+            <article><h4>1. De los datos a los grupos</h4><p>Primero se separan las jugadoras por posición. Dentro de cada posición, la app usa sus estadísticas de partido para agrupar perfiles parecidos: centrales con salida de balón, laterales ofensivas, interiores de control, delanteras asociativas, etc. No se agrupa por nombre ni por fama, sino por el tipo de acciones que realiza cada jugadora.</p></article>
+            <article><h4>2. Qué significa el perfil</h4><p>El perfil no es una nota de calidad. Una jugadora puede estar en un grupo más defensivo, más creativo o más finalizador según cómo juega. La idea es contextualizar su rol y compararla con futbolistas que cumplen funciones parecidas.</p></article>
+            <article><h4>3. Buscar una jugadora</h4><p>Empieza por una futbolista concreta para entender su rol. La ficha muestra su posición, su grupo de estilo, un radar frente a la jugadora más representativa del grupo y otras jugadoras similares dentro del mismo contexto.</p></article>
+            <article><h4>4. Leer los radares</h4><p>Los radares se leen dentro de la posición: cuanto más lejos del centro, más destaca la jugadora en esa métrica frente a sus pares. Sirven para ver de un vistazo dónde sobresale y dónde queda más cerca de la media.</p></article>
+            <article><h4>5. Crear perfil</h4><p>Permite dibujar un perfil ideal con las métricas que te interesan. La app no busca simplemente a la jugadora con mejores números, sino a la que más se parece al patrón que has marcado.</p></article>
+            <article><h4>6. Comparar y mezclar rasgos</h4><p>La comparativa enfrenta jugadoras de la misma posición. La sección de encaje mixto permite elegir una jugadora y medir cuánto combina dos rasgos tácticos, por ejemplo desborde y centro, organización y llegada, o finalización y asociación.</p></article>
+            <article><h4>7. Competiciones incluidas</h4><p>Los datos utilizados proceden de Mundial 2019, Mundial 2023, Eurocopa 2022 y Eurocopa 2025.</p></article>
+            <article><h4>8. Ayudas de métricas</h4><p>Pulsa el interrogante de cualquier métrica para abrir una explicación breve. Así las definiciones viven al lado del dato y no hace falta salir de la pantalla para interpretar cada variable.</p></article>
           </div>
         </div>
       </section>
@@ -407,6 +410,6 @@
 
   <div id="metric-popover" class="metric-popover hidden"></div>
   <div id="toast" class="toast hidden"></div>
-  <script src="/app.js?v=hybrid-player-diagnosis-4"></script>
+  <script src="/app.js?v=app-polish-1"></script>
 </body>
 </html>

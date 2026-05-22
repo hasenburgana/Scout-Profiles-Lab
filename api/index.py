@@ -41,6 +41,7 @@ def health() -> Response:
         "ok": True,
         "dataLoaded": not repo.df.empty,
         "players": int(len(repo.df)),
+        "teams": int(len(repo.teams())),
         "dataFile": str(DATA_FILE),
         "assetCount": len(repo.assets),
     })

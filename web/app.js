@@ -357,6 +357,7 @@ const els = {
   status: $("#data-status"),
   statPlayers: $("#stat-players"),
   statPositions: $("#stat-positions"),
+  statTeams: $("#stat-teams"),
   playerSearch: $("#player-search"),
   clearPlayerFilters: $("#clear-player-filters"),
   playerResults: $("#player-results"),
@@ -587,6 +588,7 @@ async function loadInitialData() {
     state.health = health;
     els.status.textContent = health.dataLoaded ? `${health.players} jugadoras cargadas` : "Sin CSV cargado";
     els.statPlayers.textContent = health.players || 0;
+    if (els.statTeams) els.statTeams.textContent = health.teams || 0;
     await refreshPlayers();
   } catch (error) {
     showToast("No se pudo conectar con el backend Java.");
@@ -654,6 +656,7 @@ async function refreshPlayers() {
   state.metricsByPosition = data.metricsByPosition || {};
   state.defaultMetricsByPosition = data.defaultMetricsByPosition || {};
   els.statPositions.textContent = state.positions.length;
+  if (els.statTeams && !Number(els.statTeams.textContent)) els.statTeams.textContent = state.teams.length;
   populateStaticSelects();
   if (!state.profileSelectedMetrics.length) resetProfileMetrics();
   if (state.currentView === "hybrid-view") {
@@ -1669,6 +1672,93 @@ function hybridLevel(score, scoreA, scoreB, balance) {
   return "Muy baja";
 }
 
+function hybridLevelLabel(level) {
+  const normalized = String(level || "").toLowerCase();
+  if (normalized === "alta") return "alto";
+  if (normalized === "media") return "medio";
+  if (normalized === "baja") return "bajo";
+  return "muy bajo";
+}
+
+function renderHybridList() {
+  const player = state.currentHybridPlayer;
+  if (!player) {
+    els.hybridList.innerHTML = `<div class="search-empty">Elige una jugadora en el buscador.</div>`;
+    return;
+  }
+  const mixLabel = hybridMixLabel();
+  const detail = state.currentHybridDetail;
+  const color = colorForCluster(player.cluster);
+  const topRefs = state.hybridProfiles
+    .filter((row) => row.id !== player.id)
+    .slice(0, 3);
+  els.hybridList.innerHTML = `
+    <article class="hybrid-selected-summary">
+      <div class="avatar" style="width:64px;height:64px;border-color:${color}">${avatarHtml(player)}</div>
+      <div>
+        <strong>${escapeHtml(player.name)}</strong>
+        <small>${flagHtml(player)} ${escapeHtml(player.team || "Sin equipo")} · ${escapeHtml(positionName(player.position))}</small>
+        <span class="cluster-chip" style="background:${color}">${escapeHtml(clusterBadgeText(player))}</span>
+      </div>
+    </article>
+    <div class="hybrid-mix-summary">
+      <span>Mezcla evaluada</span>
+      <strong>${escapeHtml(mixLabel)}</strong>
+      ${detail?.hybridRank ? `<small>En esta mezcla queda en el puesto ${Number(detail.hybridRank).toFixed(0)} de ${Number(detail.positionCount || 0).toFixed(0)} jugadoras de su posición.</small>` : ""}
+    </div>
+    ${topRefs.length ? `
+      <div class="hybrid-reference-list">
+        <span class="eyebrow">Referencias de la mezcla</span>
+        ${topRefs.map((row) => `
+          <article class="hybrid-reference-card">
+            <div class="avatar" style="width:44px;height:44px;border-color:${colorForCluster(row.cluster)}">${avatarHtml(row)}</div>
+            <div>
+              <strong>${escapeHtml(row.name)}</strong>
+              <small>${flagHtml(row)} ${escapeHtml(positionName(row.position))} · ${escapeHtml(clusterName(row))}</small>
+            </div>
+            <span>${Number(row.hybridScore || 0).toFixed(0)}</span>
+          </article>
+        `).join("")}
+      </div>
+    ` : ""}
+  `;
+}
+
+function renderHybridDetail(detail) {
+  if (!detail) {
+    els.hybridDetail.innerHTML = `<div class="search-empty">Elige una jugadora y dos rasgos para calcular su hibridez.</div>`;
+    return;
+  }
+  const mixLabel = hybridMixLabel();
+  const level = hybridLevel(detail.hybridScore, detail.scoreA, detail.scoreB, detail.balanceScore);
+  els.hybridDetail.innerHTML = `
+    <div class="hybrid-card">
+      <div class="avatar" style="border-color:${colorForCluster(detail.cluster)}">${avatarHtml(detail)}</div>
+      <div>
+        <span class="eyebrow">Encaje mixto</span>
+        <h3>${escapeHtml(detail.name)}</h3>
+        <div class="player-meta">
+          <span class="badge">${flagHtml(detail)}${escapeHtml(detail.team || "Sin equipo")}</span>
+          <span class="badge">${escapeHtml(positionName(detail.position))}</span>
+          <span class="cluster-badge" style="background:${colorForCluster(detail.cluster)}">${escapeHtml(clusterBadgeText(detail))}</span>
+        </div>
+      </div>
+    </div>
+    <p class="story">${escapeHtml(`${detail.name} muestra un encaje mixto de nivel ${hybridLevelLabel(level)} para la mezcla ${mixLabel}. ${detail.diagnosis || "El score premia que tenga buen nivel en ambos bloques y que no dependa solo de uno de ellos."}`)}</p>
+    <div class="score-explainer">
+      <p><strong>Score hibrido:</strong> resume la mezcla completa. Sube cuando la jugadora puntua bien en los dos rasgos elegidos.</p>
+      <p><strong>Bloque A y bloque B:</strong> indican su nivel en cada rasgo por separado, comparada con jugadoras de su misma posición.</p>
+      <p><strong>Equilibrio:</strong> mide si los dos bloques estan compensados. Un equilibrio alto significa que no depende solo de uno de los dos perfiles.</p>
+    </div>
+    <div class="hybrid-score-grid">
+      ${hybridScoreCard("Score hibrido", detail.hybridScore)}
+      ${hybridScoreCard(hybridBlockName("A"), detail.scoreA)}
+      ${hybridScoreCard(hybridBlockName("B"), detail.scoreB)}
+      ${hybridScoreCard("Equilibrio", detail.balanceScore)}
+    </div>
+  `;
+}
+
 async function refreshSingularProfiles() {
   if (!els.singularList) return;
   const params = new URLSearchParams({
@@ -2098,14 +2188,17 @@ function avatarHtml(player) {
     return `<img src="${escapeHtml(player.photo)}" alt="${escapeHtml(player.name)}">`;
   }
   return `
-    <svg viewBox="0 0 128 128" role="img" aria-label="Avatar femenino">
-      <rect width="128" height="128" rx="64" fill="#eef5f3"></rect>
-      <circle cx="64" cy="50" r="24" fill="#f1c3b7"></circle>
-      <path d="M35 58c1-27 18-43 40-38 18 4 29 20 28 40-12-7-21-15-27-28-8 17-22 26-41 26z" fill="#3a2d38"></path>
-      <path d="M22 116c7-27 23-41 42-41s35 14 42 41" fill="#0f766e"></path>
-      <circle cx="55" cy="50" r="3" fill="#29272b"></circle>
-      <circle cx="75" cy="50" r="3" fill="#29272b"></circle>
-      <path d="M52 63c7 6 18 6 25 0" fill="none" stroke="#6d4c55" stroke-width="4" stroke-linecap="round"></path>
+    <svg viewBox="0 0 128 128" role="img" aria-label="Avatar de jugadora">
+      <rect width="128" height="128" rx="64" fill="#eef7f4"></rect>
+      <path d="M33 114c6-25 20-39 31-39s25 14 31 39" fill="#0f766e"></path>
+      <circle cx="64" cy="53" r="23" fill="#f2c6b9"></circle>
+      <path d="M34 57c1-28 18-45 40-42 18 3 30 18 31 43-12-4-24-11-34-24-8 13-20 20-37 23z" fill="#342638"></path>
+      <path d="M36 56c6-7 17-13 31-17 9-3 18-2 27 1-7-15-20-25-36-23-18 2-29 17-32 39z" fill="#413145"></path>
+      <circle cx="55" cy="54" r="3" fill="#202124"></circle>
+      <circle cx="73" cy="54" r="3" fill="#202124"></circle>
+      <path d="M62 55c-1 6-4 10-7 12 3 2 8 2 13 0" fill="none" stroke="#b8786f" stroke-width="3" stroke-linecap="round"></path>
+      <path d="M52 72c7 6 17 6 24 0" fill="none" stroke="#6f4a50" stroke-width="4" stroke-linecap="round"></path>
+      <path d="M41 94c10 9 36 9 46 0 4 5 7 12 9 20H32c2-8 5-15 9-20z" fill="#0f766e"></path>
     </svg>
   `;
 }

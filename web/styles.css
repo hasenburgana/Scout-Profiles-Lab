@@ -496,8 +496,8 @@ button {
   color: #fff;
   border-radius: var(--radius);
   background:
-    linear-gradient(100deg, rgba(15, 23, 42, .92), rgba(15, 118, 110, .72)),
-    url("https://imgresizer.eurosport.com/unsafe/1200x0/filters:format(jpeg)/origin-imgresizer.eurosport.com/2023/08/18/3764948-76588888-2560-1440.jpg") center / cover;
+    linear-gradient(100deg, rgba(15, 23, 42, .88), rgba(15, 118, 110, .66)),
+    url("https://imgresizer.eurosport.com/unsafe/1200x0/filters:format(jpeg)/origin-imgresizer.eurosport.com/2023/08/18/3764948-76588888-2560-1440.jpg") center 38% / cover;
   box-shadow: var(--shadow);
 }
 
@@ -521,7 +521,7 @@ button {
 
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(2, 132px);
+  grid-template-columns: repeat(3, 132px);
   gap: 10px;
 }
 
@@ -1102,8 +1102,12 @@ button {
 }
 
 .hybrid-player-grid {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
   align-items: start;
+}
+
+#hybrid-view .toolbar {
+  grid-template-columns: minmax(220px, .32fr) minmax(0, 1fr);
 }
 
 .hybrid-player-grid > *,
@@ -1317,12 +1321,54 @@ button {
   font-size: 12px;
 }
 
-.hybrid-reference-list > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 8px;
+.hybrid-reference-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 0 0;
   border-top: 1px solid var(--line);
+}
+
+.hybrid-reference-card strong {
+  display: block;
+  line-height: 1.15;
+}
+
+.hybrid-reference-card small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  line-height: 1.25;
+}
+
+.hybrid-reference-card > span {
+  min-width: 38px;
+  padding: 5px 7px;
+  border-radius: 999px;
+  background: #e6f5f1;
+  color: var(--teal);
+  font-family: "Space Mono", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.score-explainer {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #f7faf9;
+}
+
+.score-explainer p {
+  color: #40514d;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .hybrid-row {
