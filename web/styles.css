@@ -507,16 +507,18 @@ button {
 
 .hero h2 {
   max-width: 760px;
-  font-size: clamp(30px, 4vw, 50px);
-  line-height: 1;
+  margin-top: 8px;
+  font-size: clamp(46px, 7vw, 88px);
+  line-height: .92;
   font-weight: 900;
 }
 
 .hero p {
-  max-width: 720px;
-  margin-top: 12px;
+  max-width: 790px;
+  margin-top: 18px;
   color: #d5eee8;
   line-height: 1.55;
+  font-size: 18px;
 }
 
 .hero-stats {
@@ -2334,6 +2336,10 @@ button {
 
 .home-landing-copy {
   padding: 28px;
+  display: grid;
+  grid-template-columns: minmax(260px, .75fr) minmax(0, 1.25fr);
+  gap: 28px;
+  align-items: center;
   border-left: 8px solid var(--teal);
 }
 
@@ -2348,27 +2354,32 @@ button {
 }
 
 .home-landing-copy h3 {
-  max-width: 760px;
+  max-width: 540px;
   margin: 12px 0 14px;
-  font-size: clamp(2rem, 4vw, 3.7rem);
-  line-height: 1;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.04;
   letter-spacing: 0;
   color: #0f1d21;
 }
 
 .home-landing-copy p {
-  max-width: 700px;
+  max-width: 760px;
   margin: 0;
   color: var(--muted);
   font-size: 1.02rem;
   line-height: 1.7;
 }
 
+.home-landing-body {
+  display: grid;
+  gap: 18px;
+}
+
 .home-landing-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 0;
 
 }
 
@@ -2520,6 +2531,8 @@ button {
   }
 
   .home-landing-copy {
+    grid-template-columns: 1fr;
+    gap: 14px;
     padding: 28px;
   }
 
