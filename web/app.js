@@ -451,13 +451,21 @@ function bindEvents() {
       showMetricPopover(help, help.dataset.helpMetric);
       return;
     }
+    const scoreHelp = event.target.closest("[data-help-score]");
+    if (scoreHelp) {
+      event.preventDefault();
+      event.stopPropagation();
+      showScorePopover(scoreHelp, scoreHelp.dataset.helpScore);
+      return;
+    }
     if (!event.target.closest("#metric-popover")) hideMetricPopover();
   });
   document.addEventListener("keydown", (event) => {
-    const help = event.target.closest?.("[data-help-metric]");
+    const help = event.target.closest?.("[data-help-metric], [data-help-score]");
     if (!help || !["Enter", " "].includes(event.key)) return;
     event.preventDefault();
-    showMetricPopover(help, help.dataset.helpMetric);
+    if (help.dataset.helpMetric) showMetricPopover(help, help.dataset.helpMetric);
+    if (help.dataset.helpScore) showScorePopover(help, help.dataset.helpScore);
   });
 
   [els.playerSearch, els.playerTeam, els.playerPosition].forEach((el) => {
@@ -1655,9 +1663,11 @@ function hybridMetricRow(item) {
 
 function hybridScoreCard(label, value) {
   const number = Math.max(0, Math.min(100, Number(value || 0)));
+  const normalized = normalize(label);
+  const helpKey = normalized.includes("equilibrio") ? "balance" : normalized.includes("score") ? "hybrid" : "block";
   return `
     <article>
-      <span>${escapeHtml(label)}</span>
+      <span>${escapeHtml(label)} ${scoreHelpIcon(helpKey, label)}</span>
       <strong>${number.toFixed(0)}</strong>
       <div class="score-bar"><span style="width:${number}%"></span></div>
     </article>
@@ -1744,18 +1754,13 @@ function renderHybridDetail(detail) {
         </div>
       </div>
     </div>
-    <p class="story">${escapeHtml(`${detail.name} muestra un encaje mixto de nivel ${hybridLevelLabel(level)} para la mezcla ${mixLabel}. ${detail.diagnosis || "El score premia que tenga buen nivel en ambos bloques y que no dependa solo de uno de ellos."}`)}</p>
-    <div class="score-explainer">
-      <p><strong>Score hibrido:</strong> resume la mezcla completa. Sube cuando la jugadora puntua bien en los dos rasgos elegidos.</p>
-      <p><strong>Bloque A y bloque B:</strong> indican su nivel en cada rasgo por separado, comparada con jugadoras de su misma posición.</p>
-      <p><strong>Equilibrio:</strong> mide si los dos bloques estan compensados. Un equilibrio alto significa que no depende solo de uno de los dos perfiles.</p>
-    </div>
     <div class="hybrid-score-grid">
-      ${hybridScoreCard("Score hibrido", detail.hybridScore)}
+      ${hybridScoreCard("Score híbrido", detail.hybridScore)}
       ${hybridScoreCard(hybridBlockName("A"), detail.scoreA)}
       ${hybridScoreCard(hybridBlockName("B"), detail.scoreB)}
       ${hybridScoreCard("Equilibrio", detail.balanceScore)}
     </div>
+    <p class="story">${escapeHtml(`${detail.name} muestra un encaje mixto de nivel ${hybridLevelLabel(level)} para la mezcla ${mixLabel}. ${detail.diagnosis || "El score premia que tenga buen nivel en ambos bloques y que no dependa solo de uno de ellos."}`)}</p>
   `;
 }
 
@@ -2133,6 +2138,10 @@ function helpIcon(metric) {
   return `<span role="button" tabindex="0" class="metric-help" data-help-metric="${escapeHtml(metric)}" aria-label="Explicar ${escapeHtml(formatMetric(metric))}">?</span>`;
 }
 
+function scoreHelpIcon(key, label) {
+  return `<span role="button" tabindex="0" class="metric-help score-help" data-help-score="${escapeHtml(key)}" aria-label="Explicar ${escapeHtml(label)}">?</span>`;
+}
+
 function metricDescription(metric) {
   if (METRIC_DESCRIPTIONS[metric]) return METRIC_DESCRIPTIONS[metric];
   const normalized = normalize(metric);
@@ -2142,12 +2151,42 @@ function metricDescription(metric) {
 
 function showMetricPopover(anchor, metric) {
   if (!els.metricPopover || !metric) return;
+  showInfoPopover(anchor, formatMetric(metric), metricDescription(metric), `Variable original: ${metric}`);
+}
+
+function showScorePopover(anchor, key) {
+  const info = {
+    hybrid: {
+      title: "Score híbrido",
+      body: "Resume la mezcla completa. Sube cuando la jugadora puntúa bien en los dos rasgos elegidos, no cuando solo destaca mucho en uno.",
+      foot: "Cuanto más cerca de 100, mejor encaje mixto."
+    },
+    block: {
+      title: "Score del bloque",
+      body: "Indica el nivel de la jugadora en ese rasgo concreto, siempre comparada con futbolistas de su misma posición.",
+      foot: "Sirve para ver qué parte de la mezcla sostiene mejor."
+    },
+    balance: {
+      title: "Equilibrio",
+      body: "Mide si los dos bloques están compensados. Un valor alto significa que la jugadora no depende solo de uno de los dos perfiles.",
+      foot: "Puede ser alto aunque el score global sea medio."
+    }
+  }[key] || {
+    title: "Score",
+    body: "Indicador de encaje dentro de la posición seleccionada.",
+    foot: ""
+  };
+  showInfoPopover(anchor, info.title, info.body, info.foot);
+}
+
+function showInfoPopover(anchor, title, body, foot = "") {
+  if (!els.metricPopover || !anchor) return;
   const rect = anchor.getBoundingClientRect();
   els.metricPopover.innerHTML = `
     <button type="button" class="metric-popover-close" aria-label="Cerrar">×</button>
-    <strong>${escapeHtml(formatMetric(metric))}</strong>
-    <p>${escapeHtml(metricDescription(metric))}</p>
-    <small>Variable original: ${escapeHtml(metric)}</small>
+    <strong>${escapeHtml(title)}</strong>
+    <p>${escapeHtml(body)}</p>
+    ${foot ? `<small>${escapeHtml(foot)}</small>` : ""}
   `;
   els.metricPopover.classList.remove("hidden");
   const width = Math.min(330, window.innerWidth - 24);
@@ -2189,16 +2228,11 @@ function avatarHtml(player) {
   }
   return `
     <svg viewBox="0 0 128 128" role="img" aria-label="Avatar de jugadora">
-      <rect width="128" height="128" rx="64" fill="#eef7f4"></rect>
-      <path d="M33 114c6-25 20-39 31-39s25 14 31 39" fill="#0f766e"></path>
-      <circle cx="64" cy="53" r="23" fill="#f2c6b9"></circle>
-      <path d="M34 57c1-28 18-45 40-42 18 3 30 18 31 43-12-4-24-11-34-24-8 13-20 20-37 23z" fill="#342638"></path>
-      <path d="M36 56c6-7 17-13 31-17 9-3 18-2 27 1-7-15-20-25-36-23-18 2-29 17-32 39z" fill="#413145"></path>
-      <circle cx="55" cy="54" r="3" fill="#202124"></circle>
-      <circle cx="73" cy="54" r="3" fill="#202124"></circle>
-      <path d="M62 55c-1 6-4 10-7 12 3 2 8 2 13 0" fill="none" stroke="#b8786f" stroke-width="3" stroke-linecap="round"></path>
-      <path d="M52 72c7 6 17 6 24 0" fill="none" stroke="#6f4a50" stroke-width="4" stroke-linecap="round"></path>
-      <path d="M41 94c10 9 36 9 46 0 4 5 7 12 9 20H32c2-8 5-15 9-20z" fill="#0f766e"></path>
+      <rect width="128" height="128" rx="64" fill="#ffffff"></rect>
+      <path d="M26 116c5-20 17-33 34-38 3-1 5-3 5-6V58h14v14c0 3 2 5 5 6 17 5 29 18 34 38H26z" fill="#050505"></path>
+      <path d="M37 67c0-31 15-51 37-51 21 0 37 20 37 51 0 12-3 24-8 34H45c-5-10-8-22-8-34z" fill="#050505"></path>
+      <path d="M31 88c5-10 9-24 9-40 4 20 12 35 27 42H31z" fill="#050505"></path>
+      <path d="M97 48c0 16 4 30 9 40H70c15-7 23-22 27-40z" fill="#050505"></path>
     </svg>
   `;
 }
