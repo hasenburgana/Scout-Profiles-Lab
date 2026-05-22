@@ -1718,116 +1718,281 @@ button {
 }
 
 .glossary {
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 26px;
+  overflow: hidden;
 }
 
 .glossary-header {
-  margin-bottom: 1.8rem;
+  max-width: 1080px;
+  margin-bottom: 28px;
 }
 
 .glossary .eyebrow {
   display: inline-block;
-  margin-bottom: 0.4rem;
-  color: var(--accent, #0f8f8a);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
   text-transform: uppercase;
 }
 
 .glossary h3 {
-  margin: 0 0 0.7rem;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  line-height: 1.1;
+  margin: 0 0 12px;
   color: #071b1b;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: .98;
+  font-weight: 900;
 }
 
 .glossary-intro {
-  max-width: 980px;
-  margin: 0;
+  max-width: 1050px;
   color: #516565;
-  font-size: 1.02rem;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.65;
 }
 
-.glossary-grid {
+.glossary-section {
+  margin-top: 24px;
+}
+
+.glossary-section-head {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: minmax(220px, .35fr) minmax(0, .65fr);
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.glossary-section-head h4 {
+  color: #071b1b;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.glossary-section-head p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.glossary-concepts {
+  display: grid;
+  grid-template-columns: minmax(360px, 1.15fr) repeat(3, minmax(210px, .85fr));
+  gap: 14px;
   align-items: stretch;
 }
 
 .glossary-card {
-  display: flex;
-  gap: 1rem;
-  padding: 1.25rem;
-  border: 1px solid rgba(12, 40, 38, 0.12);
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 100%;
+  padding: 18px;
+  border: 1px solid rgba(15, 118, 110, .14);
   border-radius: 18px;
-  background: linear-gradient(180deg, #f8fbfa 0%, #f2f7f6 100%);
-  box-shadow: 0 8px 24px rgba(10, 35, 33, 0.05);
+  background: linear-gradient(180deg, #ffffff 0%, #f5faf8 100%);
+  box-shadow: 0 12px 28px rgba(15, 35, 32, .06);
 }
 
-.glossary-card.featured {
-  grid-column: span 2;
-  background: linear-gradient(135deg, rgba(15, 143, 138, 0.10), rgba(255, 255, 255, 0.95));
-  border-color: rgba(15, 143, 138, 0.25);
+.concept-card {
+  border-top: 5px solid rgba(15, 118, 110, .28);
 }
 
-.glossary-number {
-  flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
+.main-concept {
+  background:
+    radial-gradient(circle at top right, rgba(15, 118, 110, .16), transparent 34%),
+    linear-gradient(135deg, #f2fbf8 0%, #ffffff 72%);
+  border-color: rgba(15, 118, 110, .26);
+}
+
+.glossary-number,
+.step-icon {
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
+  border-radius: 13px;
   background: #102927;
   color: #7ff3e8;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-family: "Space Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-.glossary-card h4 {
-  margin: 0 0 0.55rem;
+.glossary-tag {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e3f5f1;
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.glossary-card h4,
+.glossary-step h4,
+.glossary-footer-note h4 {
+  margin: 0 0 8px;
   color: #071b1b;
-  font-size: 1.08rem;
-  line-height: 1.25;
+  font-size: 18px;
+  line-height: 1.2;
 }
 
-.glossary-card p {
-  margin: 0;
+.glossary-card p,
+.glossary-step p,
+.glossary-footer-note p {
   color: #516565;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.58;
 }
 
 .glossary-card p + p {
-  margin-top: 0.65rem;
+  margin-top: 10px;
 }
 
-@media (max-width: 1100px) {
-  .glossary-grid {
+.app-section {
+  margin-top: 34px;
+}
+
+.glossary-app-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(210px, 1fr));
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 35, 32, .05);
+}
+
+.glossary-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  padding: 18px;
+  background: linear-gradient(180deg, #ffffff, #f7faf9);
+}
+
+.glossary-step + .glossary-step {
+  border-left: 1px solid var(--line);
+}
+
+.glossary-step::after {
+  content: "";
+  position: absolute;
+  top: 34px;
+  right: -8px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: #ffffff;
+  transform: rotate(45deg);
+}
+
+.glossary-step:last-child::after {
+  display: none;
+}
+
+.glossary-step .step-icon {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.glossary-footer-note {
+  display: grid;
+  grid-template-columns: minmax(220px, .28fr) minmax(0, .72fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px dashed rgba(15, 118, 110, .35);
+  border-radius: 18px;
+  background: #f5faf8;
+}
+
+.glossary-footer-note .eyebrow {
+  margin-bottom: 4px;
+}
+
+@media (max-width: 1280px) {
+  .glossary-concepts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .glossary-card.featured {
+  .main-concept {
     grid-column: span 2;
+  }
+
+  .glossary-app-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .glossary-step:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .glossary-step:nth-child(4) {
+    border-top: 1px solid var(--line);
+  }
+
+  .glossary-step::after {
+    display: none;
   }
 }
 
-@media (max-width: 720px) {
-  .glossary-grid {
+@media (max-width: 760px) {
+  .glossary {
+    padding: 18px;
+  }
+
+  .glossary-section-head,
+  .glossary-footer-note {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .glossary-concepts,
+  .glossary-app-flow {
     grid-template-columns: 1fr;
   }
 
-  .glossary-card,
-  .glossary-card.featured {
+  .main-concept {
     grid-column: span 1;
   }
 
-  .glossary-card {
-    padding: 1rem;
+  .glossary-step + .glossary-step,
+  .glossary-step:nth-child(3),
+  .glossary-step:nth-child(4) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .glossary-card,
+  .glossary-step {
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding: 15px;
+  }
+
+  .glossary-number,
+  .step-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    font-size: 12px;
   }
 }
 
@@ -1887,10 +2052,6 @@ button {
 
   #similar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .glossary-grid {
-    column-count: 2;
   }
 }
 
@@ -1964,9 +2125,5 @@ button {
 
   .singular-toolbar .search-control {
     grid-column: auto;
-  }
-
-  .glossary-grid {
-    column-count: 1;
   }
 }
