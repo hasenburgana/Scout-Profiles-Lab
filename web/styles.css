@@ -2330,7 +2330,8 @@ button {
 .home-module-card {
   border: 1px solid rgba(255, 255, 255, 0.08);
   /*background: linear-gradient(180deg, rgba(73, 82, 96, 0.92), rgba(64, 72, 86, 0.92));*/
-  background: var(--teal);
+  /*background: var(--teal);*/
+  background: linear-gradient(180deg, rgba(221, 184, 146, 0.92), rgba(214, 149, 81, 0.92))
   border-radius: 28px;
   box-shadow: 0 18px 40px rgba(8, 15, 28, 0.16);
 }
