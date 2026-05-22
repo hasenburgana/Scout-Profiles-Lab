@@ -587,6 +587,7 @@ async function showApp() {
   els.appShell.classList.remove("hidden");
   window.scrollTo(0, 0);
   if (!state.health) {
+    els.status.textContent = "Conectando con datos...";
     await loadInitialData();
   }
 }
@@ -600,7 +601,9 @@ async function loadInitialData() {
     if (els.statTeams) els.statTeams.textContent = health.teams || 0;
     await refreshPlayers();
   } catch (error) {
-    showToast("No se pudo conectar con el backend Java.");
+    console.error("Error cargando datos iniciales", error);
+    els.status.textContent = "Error cargando datos";
+    showToast("No se pudieron cargar los datos. Recarga la página o revisa el deployment.");
   }
 }
 
