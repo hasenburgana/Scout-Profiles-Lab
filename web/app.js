@@ -2091,9 +2091,11 @@ function p05PolarLayout(labels, angles, height = 620) {
   const wideMargin = labels.some((label) => String(label).length > 18) ? 112 : 90;
   return {
     height,
-    margin: { l: wideMargin, r: wideMargin, t: 28, b: 58 },
+    //margin: { l: wideMargin, r: wideMargin, t: 28, b: 58 },
+    margin: { l: wideMargin, r: wideMargin, t: 20, b: 45 },
     polar: {
-      domain: { x: [0.06, 0.94], y: [0.06, 0.96] },
+      //domain: { x: [0.06, 0.94], y: [0.06, 0.96] },
+      domain: { x: [0, 1], y: [0, 1] },
       radialaxis: {
         visible: true,
         range: [0, 1],
@@ -2112,7 +2114,8 @@ function p05PolarLayout(labels, angles, height = 620) {
         tickfont: { size: 11, color: "#4b5563" }
       }
     },
-    legend: { orientation: "h", x: 0.5, xanchor: "center", y: -0.08 },
+    //legend: { orientation: "h", x: 0.5, xanchor: "center", y: -0.08 },
+    legend: { orientation: "h", x: 0.5, xanchor: "center", y: -0.1 },
     hovermode: "closest",
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)"
