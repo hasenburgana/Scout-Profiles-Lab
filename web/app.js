@@ -1017,7 +1017,7 @@ function renderScoreChart() {
     }));
   });
   const traces = [...fillTraces, ...lineTraces];
-  renderPlotly("score-chart", traces, p05PolarLayout(labels, angles, 520), plotConfig());
+  renderPlotly("score-chart", traces, p05PolarLayout(labels, angles, 620), plotConfig());
 }
 
 function renderScoreTable(scores, weights) {
@@ -1246,7 +1246,7 @@ function renderComparisonRadar(data) {
     }));
   });
   const traces = [...fillTraces, ...lineTraces];
-  renderPlotly("compare-radar", traces, p05PolarLayout(labels, angles, 560), plotConfig());
+  renderPlotly("compare-radar", traces, p05PolarLayout(labels, angles, 660), plotConfig());
 }
 
 function renderComparisonBars(data) {
@@ -1641,7 +1641,7 @@ function renderHybridRadar(detail) {
       width: 3,
       hovertemplate: "%{text}<br>Percentil: %{customdata:.0f}<extra></extra>"
     })
-  ], p05PolarLayout(labels, angles, 560), plotConfig());
+  ], p05PolarLayout(labels, angles, 640), plotConfig());
 }
 
 function renderHybridMetrics(detail) {
@@ -1935,7 +1935,7 @@ function renderSingularRadar(detail) {
       hovertemplate: "%{text}<br>Escala p05-p95: %{r:.2f}<extra></extra>"
     });
   }
-  renderPlotly("singular-radar", traces, p05PolarLayout(labels, angles, 560), plotConfig());
+  renderPlotly("singular-radar", traces, p05PolarLayout(labels, angles, 640), plotConfig());
 }
 
 function renderSingularMetrics(detail) {
@@ -2087,19 +2087,20 @@ function clearPlayerView() {
   purgePlotly("player-radar");
 }
 
-function p05PolarLayout(labels, angles, height = 560) {
-  const wideMargin = labels.some((label) => String(label).length > 18) ? 118 : 86;
+function p05PolarLayout(labels, angles, height = 620) {
+  const wideMargin = labels.some((label) => String(label).length > 18) ? 76 : 58;
   return {
     height,
-    margin: { l: wideMargin, r: wideMargin, t: 42, b: 62 },
+    margin: { l: wideMargin, r: wideMargin, t: 18, b: 46 },
     polar: {
+      domain: { x: [0.02, 0.98], y: [0.04, 0.98] },
       radialaxis: {
         visible: true,
         range: [0, 1],
         tickvals: [0.15, 0.5, 0.85],
         ticktext: ["P05", "P50", "P95"],
         gridcolor: "#d8e2df",
-        tickfont: { size: 10, color: "#667085" }
+        tickfont: { size: 11, color: "#667085" }
       },
       angularaxis: {
         tickmode: "array",
@@ -2108,10 +2109,10 @@ function p05PolarLayout(labels, angles, height = 560) {
         rotation: 90,
         direction: "clockwise",
         gridcolor: "#d8e2df",
-        tickfont: { size: 10, color: "#4b5563" }
+        tickfont: { size: 12, color: "#4b5563" }
       }
     },
-    legend: { orientation: "h" },
+    legend: { orientation: "h", x: 0.5, xanchor: "center", y: -0.08 },
     hovermode: "closest",
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)"
