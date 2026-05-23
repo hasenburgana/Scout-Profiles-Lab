@@ -2060,7 +2060,7 @@ function wrapPolarLabel(label) {
   let current = "";
   words.forEach((word) => {
     const next = current ? `${current} ${word}` : word;
-    if (next.length > 16 && current) {
+    if (next.length > 13 && current) {
       lines.push(current);
       current = word;
     } else {
@@ -2088,12 +2088,12 @@ function clearPlayerView() {
 }
 
 function p05PolarLayout(labels, angles, height = 620) {
-  const wideMargin = labels.some((label) => String(label).length > 18) ? 76 : 58;
+  const wideMargin = labels.some((label) => String(label).length > 18) ? 112 : 90;
   return {
     height,
-    margin: { l: wideMargin, r: wideMargin, t: 18, b: 46 },
+    margin: { l: wideMargin, r: wideMargin, t: 28, b: 58 },
     polar: {
-      domain: { x: [0.02, 0.98], y: [0.04, 0.98] },
+      domain: { x: [0.06, 0.94], y: [0.06, 0.96] },
       radialaxis: {
         visible: true,
         range: [0, 1],
@@ -2109,7 +2109,7 @@ function p05PolarLayout(labels, angles, height = 620) {
         rotation: 90,
         direction: "clockwise",
         gridcolor: "#d8e2df",
-        tickfont: { size: 12, color: "#4b5563" }
+        tickfont: { size: 11, color: "#4b5563" }
       }
     },
     legend: { orientation: "h", x: 0.5, xanchor: "center", y: -0.08 },

@@ -932,6 +932,10 @@ button {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
+#comparison-view .content-grid.two {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+}
+
 .profile-grid {
   grid-template-columns: minmax(0, 1.3fr) minmax(320px, .7fr);
 }
@@ -1021,6 +1025,26 @@ button {
 
 .chart.medium {
   min-height: 500px;
+}
+
+.chart .js-plotly-plot,
+.chart .plot-container,
+.chart .svg-container,
+.chart .main-svg {
+  overflow: visible !important;
+}
+
+#compare-radar {
+  min-height: 660px;
+}
+
+#score-chart {
+  min-height: 620px;
+}
+
+#hybrid-radar,
+#singular-radar {
+  min-height: 640px;
 }
 
 .story {
